@@ -87,12 +87,7 @@ class __FormWidgetState extends State<_FormWidget> {
     if(login == 'admin' && password == 'admin') {
       errorText = null;
 
-
-
-      final navigator = Navigator.of(context);
-      navigator.push(
-        MaterialPageRoute<void>(builder: (context) => MainScreenWidget())
-      );
+      Navigator.of(context).pushReplacementNamed('/main_screen'); // передвижение на main_screen, без возможности вернуться
       
     }
     else{
