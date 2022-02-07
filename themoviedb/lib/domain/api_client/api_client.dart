@@ -17,22 +17,12 @@ class ApiClient {
     return sessionId;
   }
 
-  Uri _makeUri(String path, [Map<String, dynamic>? parameters]) {
-    final uri = Uri.parse('$_host$path');
-    if (parameters != null) {
-      return uri.replace(queryParameters: parameters);
-    } else {
-      return uri;
-    }
-  }
-
   Future<String> _makeToken() async {
-    final url = _makeUri(
-        '/authentication/token/new', <String, dynamic>{'?api_key=': _apiKey});
+    final url = Uri.parse('https://api.themoviedb.org/3/authentication/token/new?api_key=77a8c506fd7ef883f6b1e6c80fd4fbad');
     final request = await _client.getUrl(url);
     final responce = await request.close();
     final json = (await responce.jsonDecode()) as Map<String, dynamic>;
-    final token = json['request-token'] as String;
+    final token = json['request_token'] as String;
     return token;
   }
 
@@ -40,18 +30,16 @@ class ApiClient {
       {required String username,
       required String password,
       required String requestToken}) async {
-    final url = _makeUri('/authentication/token/validate_with_login',
-        <String, dynamic>{'?api_key=': _apiKey});
+    final url = Uri.parse('https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=77a8c506fd7ef883f6b1e6c80fd4fbad');
     final parameters = <String, dynamic>{
       'username': username,
       'password': password,
       'request_token': requestToken
     };
     final request = await _client.postUrl(url);
-
-    request.headers.contentType = ContentType.json;
-    request.headers.add('Content-type', 'application/json; charser=UTF-8');
+    request.headers.set('Content-type', 'application/json; charser=UTF-8');
     request.write(jsonEncode(parameters));
+
     final responce = await request.close();
     final json = (await responce.jsonDecode()) as Map<String, dynamic>;
 
@@ -60,14 +48,13 @@ class ApiClient {
   }
 
   Future<String> _makeSession({required String requestToken}) async {
-    final url = _makeUri('/authentication/token/session',
-        <String, dynamic>{'?api_key=': _apiKey});
+    final url = Uri.parse('https://api.themoviedb.org/3/authentication/session/new?api_key=$_apiKey');
     final parameters = <String, dynamic>{'request_token': requestToken};
 
     final request = await _client.postUrl(url);
-
-    request.headers.contentType = ContentType.json;
+    request.headers.set('Content-type', 'application/json; charser=UTF-8');
     request.write(jsonEncode(parameters));
+     
     final responce = await request.close();
     final json = (await responce.jsonDecode()) as Map<String, dynamic>;
 

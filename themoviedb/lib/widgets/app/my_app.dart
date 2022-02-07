@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
           )),
 
       routes: {
-        //навигация
         '/auth': (context) => AuthProvider(
               model: AuthModel(),
               child: const AuthWidget(),

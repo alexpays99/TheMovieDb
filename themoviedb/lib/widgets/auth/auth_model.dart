@@ -47,7 +47,6 @@ class AuthModel extends ChangeNotifier {
       return;
     }
     await _sessionDataProvider.setSessionId(sessionId);
-    print('sessionId');
     unawaited(Navigator.of(context).pushNamed('/main_screen'));
   }
 }
