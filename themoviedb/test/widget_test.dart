@@ -10,11 +10,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:themoviedb/main.dart';
 import 'package:themoviedb/widgets/app/my_app.dart';
+import 'package:themoviedb/widgets/app/my_app_model.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp(model: MyAppModel(),));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
 import 'package:themoviedb/widgets/movie_list/movie_list_widget.dart';
+import 'package:themoviedb/widgets/navigation/main_navigation.dart';
+import 'package:themoviedb/widgets/news/news_list_widget.dart';
+import 'package:themoviedb/widgets/tv_show_list/tv_show_list.dart';
 
 class MainScreenWidget extends StatefulWidget {
   const MainScreenWidget({Key? key}) : super(key: key);
@@ -24,17 +28,30 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     return Scaffold(
         appBar: AppBar(
           title: Text('TMDB'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search),
+              tooltip: 'Open shopping cart',
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Open shopping cart',
+              onPressed: () {
+                SessionDataProvider().setSessionId(null);
+                Navigator.of(context).pushNamed(MainNavigationRouteNames.auth);
+              },
+            ),
+          ],
         ),
-        body: IndexedStack( //чтобы после переключения между вкладками "Новости", "Фильмы" и "Сериалы" сохранялось состояние на предыдущей вкладке, которое было до переключения, попестим эти виджеты в IndexedStack. Т. е. в этом виджете все 3 вкладки существуют одновременно, просто отображается только один из них на данный момент времени. При переключении между ними никакой из них из памяти не удаляется и не удаляется их состояние. Этот способ зфанимает больше памяти, но зато не делает лишних действий
-          index: _selectedTab, // показывает виджет, который в данный момент будет показывать
+        body: IndexedStack(
+          //чтобы после переключения между вкладками "Новости", "Фильмы" и "Сериалы" сохранялось состояние на предыдущей вкладке, которое было до переключения, попестим эти виджеты в IndexedStack. Т. е. в этом виджете все 3 вкладки существуют одновременно, просто отображается только один из них на данный момент времени. При переключении между ними никакой из них из памяти не удаляется и не удаляется их состояние. Этот способ зфанимает больше памяти, но зато не делает лишних действий
+          index:
+              _selectedTab, // показывает виджет, который в данный момент будет показывать
           children: [
-            Text(
-              'Новости',
-            ),
+            NewsListWidget(),
             MovieListWidget(),
-            Text(
-              'Сериалы',
-            ),
+            TvShowListWidget(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

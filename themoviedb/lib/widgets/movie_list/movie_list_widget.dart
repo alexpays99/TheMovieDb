@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:themoviedb/resources/resources.dart';
+import 'package:themoviedb/widgets/navigation/main_navigation.dart';
 
 class Movie {
   final int id;
@@ -165,7 +166,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
   // переход в карточку фильма при нажатии на него.
   void _onMovieTap(int index) {
     final id = _movies[index].id;
-    Navigator.of(context).pushNamed('/main_screen/movie_details', // навигатор контекста получает навигатор, потом пуши имя роута и передает в arguments id фильма
+    Navigator.of(context).pushNamed(MainNavigationRouteNames.movieDetails, // навигатор контекста получает навигатор, потом пуши имя роута и передает в arguments id фильма
      arguments: id
     );
   }
