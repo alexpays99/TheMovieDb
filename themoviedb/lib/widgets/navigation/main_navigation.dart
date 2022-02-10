@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:themoviedb/widgets/auth/auth_model.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
+import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
 
@@ -17,11 +18,14 @@ class MainNavigation {
       : MainNavigationRouteNames.auth;
 
   final routes = <String, Widget Function(BuildContext)>{
-    '/auth': (context) => AuthProvider(
+    MainNavigationRouteNames.auth: (context) => NotifierProvider(
           model: AuthModel(),
           child: const AuthWidget(),
         ),
-    '/main_screen': (context) => const MainScreenWidget(),
+    MainNavigationRouteNames.mainScreen: (context) => NotifierProvider(
+          model: MainScreenModel(),
+          child: const MainScreenWidget(),
+        )
   };
   Route<Object> onGenrateRoute(RouteSettings settings) {
     switch (settings.name) {
