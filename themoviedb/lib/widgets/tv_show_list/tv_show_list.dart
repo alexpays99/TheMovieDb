@@ -22,7 +22,7 @@ class Movie {
 }
 
 class TvShowListWidget extends StatefulWidget {
-  TvShowListWidget({Key? key}) : super(key: key);
+  const TvShowListWidget({Key? key}) : super(key: key);
 
   @override
   State<TvShowListWidget> createState() => _TvShowListWidgetState();

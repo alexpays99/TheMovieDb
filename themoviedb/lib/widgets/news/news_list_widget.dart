@@ -22,7 +22,7 @@ class Movie {
 }
 
 class NewsListWidget extends StatefulWidget {
-  NewsListWidget({Key? key}) : super(key: key);
+  const NewsListWidget({Key? key}) : super(key: key);
 
   @override
   State<NewsListWidget> createState() => _NewsListWidgetState();

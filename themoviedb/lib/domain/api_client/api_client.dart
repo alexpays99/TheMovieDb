@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:themoviedb/domain/entity/popular_movie_responce.dart';
+
 enum ApiClientExceptionType { Network, Auth, Other }
 
 class ApiClientException implements Exception {
@@ -14,6 +16,8 @@ class ApiClient {
   static const _host = 'https://api.themoviedb.org/3';
   static const _imageUrl = 'https://image.tmdb.org/t/p/w500';
   static const _apiKey = '77a8c506fd7ef883f6b1e6c80fd4fbad';
+
+  static String imageUrl(String path) => _imageUrl + path; 
 
   Future<String> auth(
       {required String username, required String password}) async {
@@ -37,6 +41,29 @@ class ApiClient {
 
       final token = json['request_token'] as String;
       return token;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.Network);
+    } on ApiClientException {
+      rethrow; // если здесь ошибка типа ApiClientException, то она просто опрокидывается выше
+    } catch (e) {
+      throw ApiClientException(ApiClientExceptionType
+          .Other); //если возника какая-то другия ошибка, отличная от SocketException или ApiClientException, то генерится тип ошибки ApiClientExceptionType.Other и передаёся наверх
+    }
+  }
+
+  Future<PopularMovieResponce> popularMovie(int page, String locale) async {
+    final pageNumber = page.toString();
+    final url = Uri.parse(
+        'https://api.themoviedb.org/3/movie/popular?api_key=77a8c506fd7ef883f6b1e6c80fd4fbad&language=$locale&page=$pageNumber');
+    try {
+      final request = await _client.getUrl(url);
+      final responce = await request.close();
+      final jsonMap = (await responce.jsonDecode()) as Map<String, dynamic>;
+
+      _validateResponce(responce, jsonMap);
+
+      final responceResult = PopularMovieResponce.fromJson(jsonMap);
+      return responceResult;
     } on SocketException {
       throw ApiClientException(ApiClientExceptionType.Network);
     } on ApiClientException {
@@ -106,6 +133,7 @@ class ApiClient {
     }
   }
 
+  // хелпер для обработчика ошибок 
   void _validateResponce(HttpClientResponse responce, Map<String, dynamic> json) {
     if (responce.statusCode == 401) {
       final dynamic status = json['status_code'];
