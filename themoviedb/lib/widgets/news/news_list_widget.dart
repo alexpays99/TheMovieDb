@@ -29,7 +29,6 @@ class NewsListWidget extends StatefulWidget {
 }
 
 class _NewsListWidgetState extends State<NewsListWidget> {
-  //массив с фильмами
   final _movies = [
     Movie(
       id: 1,
@@ -305,7 +304,6 @@ class _NewsListWidgetState extends State<NewsListWidget> {
       children: [
         Center(
           child: Card(
-            //color: Colors.brown[100],
             child: ListView(
               padding: EdgeInsets.only(top: 55, left: 5),
               scrollDirection: Axis.vertical,

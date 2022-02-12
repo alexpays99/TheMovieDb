@@ -193,7 +193,7 @@ class _TvShowListWidgetState extends State<TvShowListWidget> {
         arguments: id);
   }
 
-    Widget news (int n) {
+    Widget tvShows (int n) {
       return Container(
         height: 380.0,
         child: ListView.builder(
@@ -312,13 +312,13 @@ class _TvShowListWidgetState extends State<TvShowListWidget> {
               children: <Widget>[
                 SizedBox(height: 20,),
                 Text('Новые сезоны', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                news(_filteredMovies.length),
+                tvShows(_filteredMovies.length),
                 SizedBox(height: 20,),
                 Text('Лучшие сериалы 2021', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                news(_filteredMovies.length),
+                tvShows(_filteredMovies.length),
                 SizedBox(height: 20,),
                 Text('Сериалы с захватывающим сюжетом', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                news(_filteredMovies.length),
+                tvShows(_filteredMovies.length),
               ],
             ),
           ),

@@ -28,7 +28,6 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
   @override
   Widget build(BuildContext context) {
     final model = NotifierProvider.read<MainScreenModel>(context);
-    print(model);
     return Scaffold(
         appBar: AppBar(
           title: Text('TMDB'),
