@@ -24,6 +24,7 @@ class MovieListWidget extends StatelessWidget {
                 .movies.length, // показывает кол-во фильмов в массиве _movies
             itemExtent: 160,
             itemBuilder: (BuildContext context, int index) {
+              model.showedMovieAtIndex(index);
               final movie = model.movies[
                   index]; // переменная с конкретным текущим фильмом, который должен отображаться
               final posterPath = movie.posterPath;
