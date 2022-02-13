@@ -48,7 +48,7 @@ class MovieListModel extends ChangeNotifier {
       _isLoadingInProgress = false;
     }
   }
-
+//
   void onMovieTap(BuildContext context, int index) {
     final id = _movies[index].id;
     Navigator.of(context)
