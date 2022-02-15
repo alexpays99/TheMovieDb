@@ -74,6 +74,32 @@ class ApiClient {
     }
   }
 
+    // поиск фильмов
+    Future<PopularMovieResponce> searchMovie(int page, String locale, String query) async {
+    final pageNumber = page.toString();
+    final includeAdult = true.toString();
+    //final Query = query;
+    final url = Uri.parse(
+        'https://api.themoviedb.org/3/search/movie?api_key=77a8c506fd7ef883f6b1e6c80fd4fbad&query=$query&language=$locale&page=$pageNumber&include_adult=$includeAdult');
+    try {
+      final request = await _client.getUrl(url);
+      final responce = await request.close();
+      final jsonMap = (await responce.jsonDecode()) as Map<String, dynamic>;
+
+      _validateResponce(responce, jsonMap);
+
+      final responceResult = PopularMovieResponce.fromJson(jsonMap);
+      return responceResult;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.Network);
+    } on ApiClientException {
+      rethrow; // если здесь ошибка типа ApiClientException, то она просто опрокидывается выше
+    } catch (e) {
+      throw ApiClientException(ApiClientExceptionType
+          .Other); //если возника какая-то другия ошибка, отличная от SocketException или ApiClientException, то генерится тип ошибки ApiClientExceptionType.Other и передаёся наверх
+    }
+  }
+
   Future<String> _validateUser(
       {required String username,
       required String password,
