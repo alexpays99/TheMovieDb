@@ -31,18 +31,14 @@ class MovieListModel extends ChangeNotifier {
     if (_locale != locale) return;
     _locale = locale;
     _dateFormat = DateFormat.yMMMMd(_locale);
-    _currentPage = 0;
-    _totalPage = 1;
-    _movies.clear(); // удаляет все фильмы со списка со старой локалью
-    loadNextPage(); // перезагружает заново список популярных фильмов с новой локалью
     await _resetList();
   }
 
   Future<void> _resetList() async {
     _currentPage = 0;
     _totalPage = 1;
-    _movies.clear();
-    await loadNextPage();
+    _movies.clear(); // удаляет все фильмы со списка со старой локалью
+    await loadNextPage(); // перезагружает заново список популярных фильмов с новой локалью
   }
 
   Future<PopularMovieResponce> _loadMovies(int nextPage, String locale) async {
