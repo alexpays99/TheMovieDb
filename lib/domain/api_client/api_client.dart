@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:convert';
-
+import 'package:themoviedb/domain/entity/movie_details.dart';
 import 'package:themoviedb/domain/entity/popular_movie_responce.dart';
 
 enum ApiClientExceptionType { Network, Auth, Other }
@@ -17,7 +17,7 @@ class ApiClient {
   static const _imageUrl = 'https://image.tmdb.org/t/p/w500';
   static const _apiKey = '77a8c506fd7ef883f6b1e6c80fd4fbad';
 
-  static String imageUrl(String path) => _imageUrl + path; 
+  static String imageUrl(String path) => _imageUrl + path;
 
   Future<String> auth(
       {required String username, required String password}) async {
@@ -63,6 +63,56 @@ class ApiClient {
       _validateResponce(responce, jsonMap);
 
       final responceResult = PopularMovieResponce.fromJson(jsonMap);
+      return responceResult;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.Network);
+    } on ApiClientException {
+      rethrow; // если здесь ошибка типа ApiClientException, то она просто опрокидывается выше
+    } catch (e) {
+      throw ApiClientException(ApiClientExceptionType
+          .Other); //если возника какая-то другия ошибка, отличная от SocketException или ApiClientException, то генерится тип ошибки ApiClientExceptionType.Other и передаёся наверх
+    }
+  }
+
+  // поиск фильмов
+  Future<PopularMovieResponce> searchMovie(
+      int page, String locale, String query) async {
+    final pageNumber = page.toString();
+    final includeAdult = true.toString();
+    final url = Uri.parse(
+        'https://api.themoviedb.org/3/search/movie?api_key=77a8c506fd7ef883f6b1e6c80fd4fbad&query=$query&language=$locale&page=$pageNumber&include_adult=$includeAdult');
+    try {
+      final request = await _client.getUrl(url);
+      final responce = await request.close();
+      final jsonMap = (await responce.jsonDecode()) as Map<String, dynamic>;
+
+      _validateResponce(responce, jsonMap);
+
+      final responceResult = PopularMovieResponce.fromJson(jsonMap);
+      return responceResult;
+    } on SocketException {
+      throw ApiClientException(ApiClientExceptionType.Network);
+    } on ApiClientException {
+      rethrow; // если здесь ошибка типа ApiClientException, то она просто опрокидывается выше
+    } catch (e) {
+      throw ApiClientException(ApiClientExceptionType
+          .Other); //если возника какая-то другия ошибка, отличная от SocketException или ApiClientException, то генерится тип ошибки ApiClientExceptionType.Other и передаёся наверх
+    }
+  }
+
+  // поулчения детальной информации о фильм
+  Future<MovieDetails> movieDetails(
+      int movieId, String locale) async {
+    final url = Uri.parse(
+        'https://api.themoviedb.org/3/movie/$movieId?api_key=77a8c506fd7ef883f6b1e6c80fd4fbad&language=$locale');
+    try {
+      final request = await _client.getUrl(url);
+      final responce = await request.close();
+      final jsonMap = (await responce.jsonDecode()) as Map<String, dynamic>;
+
+      _validateResponce(responce, jsonMap);
+
+      final responceResult = MovieDetails.fromJson(jsonMap);
       return responceResult;
     } on SocketException {
       throw ApiClientException(ApiClientExceptionType.Network);
@@ -133,16 +183,17 @@ class ApiClient {
     }
   }
 
-  // хелпер для обработчика ошибок 
-  void _validateResponce(HttpClientResponse responce, Map<String, dynamic> json) {
+  // хелпер для обработчика ошибок
+  void _validateResponce(
+      HttpClientResponse responce, Map<String, dynamic> json) {
     if (responce.statusCode == 401) {
       final dynamic status = json['status_code'];
       final code = status is int ? status : 0;
       if (code == 30) {
         throw ApiClientException(ApiClientExceptionType.Auth);
-      }
-      else {
-        throw ApiClientException(ApiClientExceptionType.Other); // ошибка авторизации. она будет относится к типу ошибок ApiClientExceptionType.Other, поскольку если сгенерируется неправильный токен авторизации то пользователь ничего не сможет с этим сделать
+      } else {
+        throw ApiClientException(ApiClientExceptionType
+            .Other); // ошибка авторизации. она будет относится к типу ошибок ApiClientExceptionType.Other, поскольку если сгенерируется неправильный токен авторизации то пользователь ничего не сможет с этим сделать
       }
     }
   }

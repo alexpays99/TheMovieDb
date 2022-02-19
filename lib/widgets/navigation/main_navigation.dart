@@ -4,7 +4,9 @@ import 'package:themoviedb/widgets/auth/auth_model.dart';
 import 'package:themoviedb/widgets/auth/auth_widget.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_model.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';
+import 'package:themoviedb/widgets/movie_details/movie_details_model.dart';
 import 'package:themoviedb/widgets/movie_details/movie_details_widget.dart';
+import 'package:themoviedb/Library/Widgets/Inherited/provider.dart';
 
 abstract class MainNavigationRouteNames {
   static const auth = '/auth';
@@ -19,11 +21,11 @@ class MainNavigation {
 
   final routes = <String, Widget Function(BuildContext)>{
     MainNavigationRouteNames.auth: (context) => NotifierProvider(
-          model: AuthModel(),
+          create: () => AuthModel(),
           child: const AuthWidget(),
         ),
     MainNavigationRouteNames.mainScreen: (context) => NotifierProvider(
-          model: MainScreenModel(),
+           create: () =>  MainScreenModel(),
           child: const MainScreenWidget(),
         )
   };
@@ -33,7 +35,11 @@ class MainNavigation {
         final arguments = settings.arguments;
         final movieId = arguments is int ? arguments : 0;
         return MaterialPageRoute(
-            builder: (context) => MovieDetailsWidget(movieId: movieId));
+          builder: (context) => NotifierProvider(
+             create: () => MovieDetailsModel(movieId)..setupLocale(context),
+            child: const MovieDetailsWidget(),
+          ),
+        );
       default:
         const widget = Text('Navigation error!');
         return MaterialPageRoute(builder: (context) => widget);

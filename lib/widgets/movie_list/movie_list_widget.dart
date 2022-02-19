@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:themoviedb/Library/Widgets/Inherited/provider.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/resources/resources.dart';
+import 'package:themoviedb/widgets/auth/auth_model.dart';
 import 'package:themoviedb/widgets/movie_list/movie_list_mode.dart';
 import 'package:themoviedb/widgets/navigation/main_navigation.dart';
 
@@ -118,6 +119,7 @@ class MovieListWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: TextField(
+            onChanged: model.searchMovie,
             decoration: InputDecoration(
               labelText: 'Поиск',
               filled: true,

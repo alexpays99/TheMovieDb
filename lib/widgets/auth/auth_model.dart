@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:pedantic/pedantic.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
 import 'package:themoviedb/domain/data_providers/session_data_provider.dart';
 import 'package:themoviedb/widgets/navigation/main_navigation.dart';
+
 
 class AuthModel extends ChangeNotifier {
   final _apiClient = ApiClient();
@@ -91,29 +91,29 @@ class AuthModel extends ChangeNotifier {
 //   }
 // }
 
-class NotifierProvider<Model extends ChangeNotifier> extends InheritedNotifier {
-  final Model model;
-  const NotifierProvider({Key? key, required this.model, required this.child})
-      : super(key: key, notifier: model, child: child);
+// class NotifierProvider<Model extends ChangeNotifier> extends InheritedNotifier {
+//   final Model model;
+//   const NotifierProvider({Key? key, required this.model, required this.child})
+//       : super(key: key, notifier: model, child: child);
 
-  final Widget child;
+//   final Widget child;
 
-  static Model? watch<Model extends ChangeNotifier>(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<NotifierProvider<Model>>()?.model;
-  }
+//   static Model? watch<Model extends ChangeNotifier>(BuildContext context) {
+//     return context.dependOnInheritedWidgetOfExactType<NotifierProvider<Model>>()?.model;
+//   }
 
-  static Model? read<Model extends ChangeNotifier>(BuildContext context) {
-    final widget =
-        context.getElementForInheritedWidgetOfExactType<NotifierProvider<Model>>()?.widget;
-    return widget is NotifierProvider<Model> ? widget.model : null;
-  }
+//   static Model? read<Model extends ChangeNotifier>(BuildContext context) {
+//     final widget =
+//         context.getElementForInheritedWidgetOfExactType<NotifierProvider<Model>>()?.widget;
+//     return widget is NotifierProvider<Model> ? widget.model : null;
+//   }
 
-  static NotifierProvider? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<NotifierProvider>();
-  }
+//   static NotifierProvider? of(BuildContext context) {
+//     return context.dependOnInheritedWidgetOfExactType<NotifierProvider>();
+//   }
 
-  @override
-  bool updateShouldNotify(NotifierProvider oldWidget) {
-    return true;
-  }
-}
+//   @override
+//   bool updateShouldNotify(NotifierProvider oldWidget) {
+//     return true;
+//   }
+// }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/Library/Widgets/Inherited/provider.dart';
+//import 'package:themoviedb/Library/Widgets/Inherited/provider.dart';
 import 'package:themoviedb/Theme/app_button_style.dart';
 import 'package:themoviedb/widgets/auth/auth_model.dart';
 import 'package:themoviedb/widgets/main_screen/main_screen_widget.dart';

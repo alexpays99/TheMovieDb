@@ -32,7 +32,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
     super.didChangeDependencies();
 
     movieListModel.setupLocale(context);
-    movieListModel.loadMovies();
+    movieListModel.loadNextPage();
   }
 
 
@@ -65,7 +65,7 @@ class _MainScreenWidgetState extends State<MainScreenWidget> {
           children: [
             const NewsListWidget(),
             NotifierProvider(
-                model: movieListModel, child: const MovieListWidget()),
+                create: () => movieListModel, isManagingModel: false, child: const MovieListWidget()),
             const TvShowListWidget(),
           ],
         ),
